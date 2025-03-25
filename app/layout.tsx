@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Analytics } from "@vercel/analytics/react";
 
 import Background from "@/components/global/Background";
+import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import Toaster from "@/components/global/Toaster";
 
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     "Business Finance",
     "Invoice Management",
   ],
-  icons: [{ rel: "icon", url: "/icon.png" }],
+  icons: [{ rel: "icon", url: "/icon.svg" }],
 };
 
 export default function RootLayout({
@@ -58,6 +59,7 @@ export default function RootLayout({
           <Analytics />
           <Header />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

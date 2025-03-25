@@ -21,7 +21,7 @@ async function HeaderContent() {
         <div>
           <div className="flex gap-4">
             <div>
-              <Button>
+              <Button className="text-white">
                 <span>Gen With AI</span>
                 <Sparkles className="h-4 w-4" />
               </Button>
