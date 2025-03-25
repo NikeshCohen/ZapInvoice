@@ -18,10 +18,10 @@ export function SummaryTab({ form }: SummaryTabProps) {
         <h3 className="mb-2 font-medium">From/To</h3>
         <div className="space-y-1 text-sm">
           <p>
-            <span className="font-medium">From:</span> {values.fromName}
+            <span className="font-medium">From:</span> {values.from.name}
           </p>
           <p>
-            <span className="font-medium">To:</span> {values.customerName}
+            <span className="font-medium">To:</span> {values.to.name}
           </p>
         </div>
       </div>
