@@ -4,25 +4,24 @@ import { ReactNode, createContext, useContext, useState } from "react";
 
 import { InvoiceData } from "@/types/schema";
 
-// Define the context type
 interface InvoiceContextType {
   invoiceData: InvoiceData;
   setInvoiceData: (data: InvoiceData) => void;
   clearInvoice: () => void;
 }
 
-// Create the context
 const InvoiceContext = createContext<InvoiceContextType | undefined>(undefined);
 
-// Initial invoice data
 const initialInvoiceData: InvoiceData = {
+  fromName: "", // Added missing property
   customerName: "",
   invoiceNumber: "",
   date: "",
   items: [],
+  paymentTerms: 0,
+  paymentMethod: "",
 };
 
-// Create the provider component
 export function InvoiceProvider({ children }: { children: ReactNode }) {
   const [invoiceData, setInvoiceDataState] =
     useState<InvoiceData>(initialInvoiceData);
@@ -44,7 +43,6 @@ export function InvoiceProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Custom hook to use the invoice context
 export function useInvoice() {
   const context = useContext(InvoiceContext);
   if (context === undefined) {
