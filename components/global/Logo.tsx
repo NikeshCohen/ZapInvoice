@@ -50,7 +50,7 @@ interface LogoProps {
     | 96;
 }
 
-function Logo({ className, size = "lg", circleSize = 8 }: LogoProps) {
+function Logo({ className, size = "lg", circleSize = 9 }: LogoProps) {
   // Convert circleSize to rem (1 unit = 0.25rem in Tailwind)
   const circleSizeInRem = circleSize * 0.25 + "rem";
 
@@ -60,7 +60,7 @@ function Logo({ className, size = "lg", circleSize = 8 }: LogoProps) {
       className={clsx("relative flex items-center justify-center", className)}
     >
       <div
-        className="bg-primary/20 absolute mr-[58px] rounded-full"
+        className="bg-primary/20 absolute mr-[66px] rounded-full"
         style={{
           width: circleSizeInRem,
           height: circleSizeInRem,

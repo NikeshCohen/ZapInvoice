@@ -18,7 +18,6 @@ export default function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    // skeleton toggle while mounting
     return (
       <div className="bg-muted relative inline-grid h-9 w-16 animate-pulse grid-cols-[1fr_1fr] items-center rounded-full" />
     );
