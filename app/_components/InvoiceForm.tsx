@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useInvoice } from "@/app/_context/InvoiceContext";
 import { TABS } from "@/constants/tabs";
@@ -13,8 +13,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 const defaultValues: InvoiceData = {
-  fromName: "",
-  customerName: "",
+  from: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    country: "",
+  },
+  to: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    country: "",
+  },
   invoiceNumber: "",
   date: "",
   items: [{ description: "", quantity: 1, price: 0 }],
@@ -34,6 +50,13 @@ export function InvoiceForm() {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      setInvoiceData(value as InvoiceData);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, form.watch, setInvoiceData]);
+
   const onSubmit = (data: InvoiceData) => {
     setInvoiceData(data);
   };
@@ -49,7 +72,18 @@ export function InvoiceForm() {
         const itemErrors = errors.items;
         return itemErrors && Object.keys(itemErrors).length > 0;
       }
-      return errors[field];
+
+      // Handle nested fields (from.* and to.*)
+      if (field.includes(".")) {
+        const [parent, child] = field.split(".") as [
+          keyof typeof errors,
+          string,
+        ];
+        return errors[parent]?.[child as keyof (typeof errors)[typeof parent]];
+      }
+
+      // Handle top-level fields
+      return errors[field as keyof typeof errors];
     });
   };
 
@@ -98,7 +132,9 @@ export function InvoiceForm() {
                 key={tab.id}
                 value={tab.id}
                 className={cn(
-                  hasSubmitted && !isTabValid(tab.id) && "text-red-600",
+                  hasSubmitted &&
+                    !isTabValid(tab.id) &&
+                    "cursor-not-allowed! text-red-600",
                 )}
               >
                 {tab.label}

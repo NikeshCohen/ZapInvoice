@@ -11,10 +11,26 @@ interface InvoiceContextType {
 }
 
 const InvoiceContext = createContext<InvoiceContextType | undefined>(undefined);
-
 const initialInvoiceData: InvoiceData = {
-  fromName: "", // Added missing property
-  customerName: "",
+  from: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    country: "",
+  },
+  to: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    country: "",
+  },
+
   invoiceNumber: "",
   date: "",
   items: [],
