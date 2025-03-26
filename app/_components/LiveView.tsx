@@ -25,7 +25,7 @@ export default function LiveView() {
     data: typeof invoiceData.from;
   }) => (
     <div className="space-y-2">
-      <h3 className="font-medium text-lg">{title}</h3>
+      <h3 className="text-lg font-medium">{title}</h3>
       <div className="space-y-1 text-sm">
         <div>{data.name || "—"}</div>
         <div>{data.email || "—"}</div>
@@ -39,9 +39,9 @@ export default function LiveView() {
   );
 
   return (
-    <div className="bg-white shadow-lg p-6 rounded-lg text-neutral-900">
+    <div className="rounded-lg bg-white p-6 text-neutral-900 shadow-lg">
       <div className="space-y-6">
-        <div className="flex sm:flex-row flex-col sm:justify-between gap-6">
+        <div className="flex flex-col gap-6 sm:flex-row sm:justify-between">
           <ContactInfo title="From" data={invoiceData.from} />
           <ContactInfo title="To" data={invoiceData.to} />
         </div>
@@ -65,15 +65,15 @@ export default function LiveView() {
           </div>
 
           <div>
-            <h3 className="mb-2 font-medium text-lg">Items</h3>
+            <h3 className="mb-2 text-lg font-medium">Items</h3>
             <div className="overflow-x-auto">
-              <table className="divide-y divide-gray-200 w-full min-w-full table-fixed">
+              <table className="w-full min-w-full table-fixed divide-y divide-gray-200">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2 w-[40%] text-left">Description</th>
-                    <th className="px-4 py-2 w-[20%] text-right">Quantity</th>
-                    <th className="px-4 py-2 w-[20%] text-right">Price</th>
-                    <th className="px-4 py-2 w-[20%] text-right">Subtotal</th>
+                    <th className="w-[40%] px-4 py-2 text-left">Description</th>
+                    <th className="w-[20%] px-4 py-2 text-right">Quantity</th>
+                    <th className="w-[20%] px-4 py-2 text-right">Price</th>
+                    <th className="w-[20%] px-4 py-2 text-right">Subtotal</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -100,7 +100,7 @@ export default function LiveView() {
                     <tr>
                       <td
                         colSpan={4}
-                        className="px-4 py-2 text-gray-500 text-center"
+                        className="px-4 py-2 text-center text-gray-500"
                       >
                         No items added
                       </td>
@@ -111,11 +111,11 @@ export default function LiveView() {
                   <tr>
                     <td
                       colSpan={3}
-                      className="px-4 py-2 font-medium text-right whitespace-nowrap"
+                      className="px-4 py-2 text-right font-medium whitespace-nowrap"
                     >
                       Total:
                     </td>
-                    <td className="px-4 py-2 font-medium text-right whitespace-nowrap">
+                    <td className="px-4 py-2 text-right font-medium whitespace-nowrap">
                       {formatCurrency(calculateTotal())}
                     </td>
                   </tr>
@@ -140,7 +140,7 @@ export default function LiveView() {
 
           {invoiceData.paymentMethod === "Bank Transfer" && (
             <div className="space-y-2">
-              <h3 className="font-medium text-lg">Bank Details</h3>
+              <h3 className="text-lg font-medium">Bank Details</h3>
               <div className="space-y-1 text-sm">
                 <div className="flex flex-wrap gap-x-2">
                   <span className="font-medium">Bank Name:</span>

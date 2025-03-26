@@ -59,7 +59,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                   <FormControl>
                     <Input {...field} placeholder="INV-001" />
                   </FormControl>
-                  <FormMessage />
+                  <div className="min-h-[20px]">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -81,7 +83,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                       name="currency"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className="min-h-[20px]">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -99,7 +103,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     <DatePicker {...field} placeholder="Select issue date" />
                   </FormControl>
                   <div className="min-h-[20px]">
-                    <FormMessage />
+                    <div className="min-h-[20px]">
+                      <FormMessage />
+                    </div>
                   </div>
                 </FormItem>
               )}
@@ -120,7 +126,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     />
                   </FormControl>
                   <div className="min-h-[20px]">
-                    <FormMessage />
+                    <div className="min-h-[20px]">
+                      <FormMessage />
+                    </div>
                   </div>
                 </FormItem>
               )}
@@ -156,7 +164,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <FormMessage />
+                <div className="min-h-[20px]">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -175,7 +185,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     className="min-h-[80px] resize-none"
                   />
                 </FormControl>
-                <FormMessage />
+                <div className="min-h-[20px]">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -226,6 +238,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                         placeholder="Enter account holder name"
                       />
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
