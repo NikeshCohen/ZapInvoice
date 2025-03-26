@@ -1,9 +1,13 @@
 import { useInvoice } from "@/app/_context/InvoiceContext";
+import { useLogo } from "@/app/_context/LogoContext";
+import { useSignature } from "@/app/_context/SignatureContext";
 
 import { Currency } from "@/components/ui/select-currency";
 
 export default function LiveView() {
   const { invoiceData } = useInvoice();
+  const { signatureData } = useSignature();
+  const { logoData } = useLogo();
 
   const calculateSubtotal = () => {
     return invoiceData.items.reduce(
@@ -67,6 +71,18 @@ export default function LiveView() {
   return (
     <div className="rounded-lg bg-white p-6 text-neutral-900 shadow-lg">
       <div className="space-y-6">
+        {/* Logo Section */}
+        {logoData && (
+          <div className="flex justify-start">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoData}
+              alt="Company Logo"
+              className="h-[60px] w-auto object-contain"
+            />
+          </div>
+        )}
+
         <div className="flex flex-col gap-6 sm:flex-row sm:justify-between">
           <ContactInfo title="From" data={invoiceData.from} />
           <ContactInfo title="To" data={invoiceData.to} />
@@ -243,6 +259,27 @@ export default function LiveView() {
               </div>
             </div>
           )}
+
+          {/* Signature Section */}
+          <div className="mt-8 border-t pt-8">
+            <div className="flex flex-col items-end">
+              <div className="w-[200px]">
+                {signatureData ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={signatureData}
+                    alt="Signature"
+                    className="h-[100px] w-full object-contain"
+                  />
+                ) : (
+                  <div className="h-[100px] border-b border-dashed" />
+                )}
+                <div className="mt-2 text-center text-sm text-gray-500">
+                  Signature
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

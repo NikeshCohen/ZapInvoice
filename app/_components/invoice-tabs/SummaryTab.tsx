@@ -1,3 +1,5 @@
+import { LogoUpload } from "@/app/_components/LogoUpload";
+import { SignatureModal } from "@/app/_components/SignatureModal";
 import type { InvoiceData } from "@/types/schema";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -19,6 +21,24 @@ export function SummaryTab({ form }: SummaryTabProps) {
 
   return (
     <div className="space-y-6">
+      <div className="rounded-lg border p-4">
+        <h3 className="mb-2 font-medium">Logo & Signature</h3>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <h4 className="mb-2 text-sm text-gray-500">Company Logo</h4>
+            <div className="flex justify-start">
+              <LogoUpload />
+            </div>
+          </div>
+          <div>
+            <h4 className="mb-2 text-sm text-gray-500">Signature</h4>
+            <div className="flex justify-start">
+              <SignatureModal />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="rounded-lg border p-4">
         <h3 className="mb-2 font-medium">From/To</h3>
         <div className="space-y-1 text-sm">
