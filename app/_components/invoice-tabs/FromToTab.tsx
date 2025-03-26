@@ -8,7 +8,7 @@ interface FromToTabProps {
 
 export function FromToTab({ form }: FromToTabProps) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-2">
       <ContactForm form={form} type="from" title="From (Your Details)" />
       <ContactForm form={form} type="to" title="To (Customer Details)" />
     </div>

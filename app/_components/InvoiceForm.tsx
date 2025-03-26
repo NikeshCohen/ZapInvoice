@@ -32,10 +32,18 @@ const defaultValues: InvoiceData = {
     country: "",
   },
   invoiceNumber: "",
-  date: "",
+  issueDate: "",
+  dueDate: "",
   items: [{ description: "", quantity: 1, price: 0 }],
   paymentTerms: 30,
   paymentMethod: "Bank Transfer",
+  bankDetails: {
+    bankName: "",
+    accountNumber: "",
+    accountHolder: "",
+  },
+  currency: "USD",
+  selectedCurrency: undefined,
 };
 
 export function InvoiceForm() {
@@ -126,7 +134,7 @@ export function InvoiceForm() {
     <Form {...form}>
       <form onSubmit={handleSubmit} className="space-y-8">
         <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid grid-cols-4 w-full">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab.id}
@@ -139,7 +147,7 @@ export function InvoiceForm() {
               >
                 {tab.label}
                 {hasSubmitted && !isTabValid(tab.id) && (
-                  <span className="ml-2 h-2 w-2 rounded-full bg-red-500" />
+                  <span className="bg-red-500 ml-2 rounded-full w-2 h-2" />
                 )}
               </TabsTrigger>
             ))}

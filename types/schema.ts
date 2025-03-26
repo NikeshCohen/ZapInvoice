@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+import { Currency } from "@/components/ui/select-currency";
+
 const contactInfoSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -16,22 +18,50 @@ export const invoiceItemSchema = z.object({
   price: z.number().min(0, "Price must be positive"),
 });
 
-export const invoiceSchema = z.object({
-  // From/To details
-  from: contactInfoSchema,
-  to: contactInfoSchema,
-
-  // Invoice details
-  invoiceNumber: z.string().min(1, "Invoice number is required"),
-  date: z.string().min(1, "Date is required"),
-
-  // Items
-  items: z.array(invoiceItemSchema),
-
-  // Payment details
-  paymentTerms: z.number().min(0, "Payment terms must be positive"),
-  paymentMethod: z.string().min(1, "Payment method is required"),
+const bankDetailsSchema = z.object({
+  bankName: z.string().min(1, "Bank name is required"),
+  accountNumber: z.string().min(1, "Account number is required"),
+  accountHolder: z.string().min(1, "Account holder name is required"),
 });
+
+export const invoiceSchema = z
+  .object({
+    from: contactInfoSchema,
+    to: contactInfoSchema,
+    invoiceNumber: z.string().min(1, "Invoice number is required"),
+    issueDate: z.string().min(1, "Issue date is required"),
+    dueDate: z.string().min(1, "Due date is required"),
+    items: z.array(invoiceItemSchema).min(1, "At least one item is required"),
+    paymentTerms: z.number().min(0, "Payment terms must be non-negative"),
+    paymentMethod: z.enum(["Bank Transfer", "Cash", "Check"]),
+    bankDetails: bankDetailsSchema.optional(),
+    currency: z.string().min(1, "Currency is required"),
+    selectedCurrency: z.custom<Currency>().optional(),
+  })
+  .refine(
+    (data) => {
+      if (!data.issueDate || !data.dueDate) return true;
+      return new Date(data.dueDate) >= new Date(data.issueDate);
+    },
+    {
+      message: "Due date can not be before issue date",
+      path: ["dueDate"],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.paymentMethod !== "Bank Transfer") return true;
+      return (
+        !!data.bankDetails?.bankName &&
+        !!data.bankDetails?.accountNumber &&
+        !!data.bankDetails?.accountHolder
+      );
+    },
+    {
+      message: "Bank details are required for bank transfer",
+      path: ["bankDetails"],
+    },
+  );
 
 export type ContactInfo = z.infer<typeof contactInfoSchema>;
 export type InvoiceData = z.infer<typeof invoiceSchema>;
@@ -43,4 +73,6 @@ type NestedKeyOf<ObjectType extends object> = {
     : `${Key}`;
 }[keyof ObjectType & (string | number)];
 
-export type InvoiceFormFields = NestedKeyOf<InvoiceData>;
+export type InvoiceFormFields =
+  | NestedKeyOf<InvoiceData>
+  | `${NestedKeyOf<InvoiceData> & string}.${string}`;

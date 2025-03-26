@@ -32,10 +32,16 @@ const initialInvoiceData: InvoiceData = {
   },
 
   invoiceNumber: "",
-  date: "",
+  issueDate: "",
+  dueDate: "",
   items: [],
   paymentTerms: 0,
   paymentMethod: "",
+  bankDetails: {
+    bankName: "",
+    accountNumber: "",
+    accountHolder: "",
+  },
 };
 
 export function InvoiceProvider({ children }: { children: ReactNode }) {

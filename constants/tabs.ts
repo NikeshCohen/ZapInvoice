@@ -1,7 +1,6 @@
 import { DetailsTab } from "@/app/_components/invoice-tabs/DetailsTab";
 import { FromToTab } from "@/app/_components/invoice-tabs/FromToTab";
 import { ItemsTab } from "@/app/_components/invoice-tabs/ItemsTab";
-import { PaymentTab } from "@/app/_components/invoice-tabs/PaymentTab";
 import { SummaryTab } from "@/app/_components/invoice-tabs/SummaryTab";
 import type { InvoiceFormFields } from "@/types/schema";
 
@@ -30,7 +29,13 @@ export const TABS = [
   {
     id: "details",
     label: "Details",
-    fields: ["invoiceNumber", "date"] as InvoiceFormFields[],
+    fields: [
+      "invoiceNumber",
+      "issueDate",
+      "dueDate",
+      "paymentTerms",
+      "paymentMethod",
+    ] as InvoiceFormFields[],
     component: DetailsTab,
   },
   {
@@ -38,12 +43,6 @@ export const TABS = [
     label: "Items",
     fields: ["items"] as InvoiceFormFields[],
     component: ItemsTab,
-  },
-  {
-    id: "payment",
-    label: "Payment",
-    fields: ["paymentTerms", "paymentMethod"] as InvoiceFormFields[],
-    component: PaymentTab,
   },
   {
     id: "summary",
