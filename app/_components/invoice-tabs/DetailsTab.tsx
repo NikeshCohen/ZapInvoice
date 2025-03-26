@@ -46,9 +46,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
   return (
     <div className="space-y-2">
       <div>
-        <h3 className="mb-4 font-medium text-lg">Invoice Details</h3>
+        <h3 className="mb-4 text-lg font-medium">Invoice Details</h3>
         <div className="space-y-4">
-          <div className="gap-4 grid sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}
               name="invoiceNumber"
@@ -87,7 +87,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
             />
           </div>
 
-          <div className="gap-4 grid sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}
               name="issueDate"
@@ -130,7 +130,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium text-lg">Payment Details</h3>
+        <h3 className="mb-4 text-lg font-medium">Payment Details</h3>
         <div className="space-y-4">
           <FormField
             control={form.control}
@@ -172,7 +172,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                   <Textarea
                     {...field}
                     placeholder="Enter any additional payment instructions or notes"
-                    className="min-h-[100px]"
+                    className="min-h-[80px] resize-none"
                   />
                 </FormControl>
                 <FormMessage />
@@ -181,8 +181,8 @@ export function DetailsTab({ form }: DetailsTabProps) {
           />
 
           {paymentMethod === "Bank Transfer" && (
-            <div className="space-y-4 bg-background/30 p-4 border rounded-lg">
-              <h3 className="font-medium text-lg">Bank Details</h3>
+            <div className="bg-background/30 space-y-4 rounded-lg border p-4">
+              <h3 className="text-lg font-medium">Bank Details</h3>
               <FormField
                 control={form.control}
                 name="bankDetails.bankName"

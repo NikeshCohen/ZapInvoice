@@ -12,6 +12,11 @@ export function SummaryTab({ form }: SummaryTabProps) {
     0,
   );
 
+  const formatCurrency = (amount: number) => {
+    const symbol = values.selectedCurrency?.symbol || "$";
+    return `${symbol}${amount.toFixed(2)}`;
+  };
+
   return (
     <div className="space-y-6">
       <div className="rounded-lg border p-4">
@@ -34,7 +39,10 @@ export function SummaryTab({ form }: SummaryTabProps) {
             {values.invoiceNumber}
           </p>
           <p>
-            <span className="font-medium">Date:</span> {values.date}
+            <span className="font-medium">Issue Date:</span> {values.issueDate}
+          </p>
+          <p>
+            <span className="font-medium">Due Date:</span> {values.dueDate}
           </p>
         </div>
       </div>
@@ -46,13 +54,15 @@ export function SummaryTab({ form }: SummaryTabProps) {
             <div key={index} className="text-sm">
               <p className="font-medium">{item.description}</p>
               <p className="text-muted-foreground">
-                {item.quantity} x ${item.price.toFixed(2)} = $
-                {(item.quantity * item.price).toFixed(2)}
+                {item.quantity} x {formatCurrency(item.price)} ={" "}
+                {formatCurrency(item.quantity * item.price)}
               </p>
             </div>
           ))}
           <div className="mt-4 border-t pt-4">
-            <p className="text-right font-medium">Total: ${total.toFixed(2)}</p>
+            <p className="text-right font-medium">
+              Total: {formatCurrency(total)}
+            </p>
           </div>
         </div>
       </div>
@@ -61,13 +71,31 @@ export function SummaryTab({ form }: SummaryTabProps) {
         <h3 className="mb-2 font-medium">Payment Details</h3>
         <div className="space-y-1 text-sm">
           <p>
-            <span className="font-medium">Payment Terms:</span>{" "}
-            {values.paymentTerms} days
-          </p>
-          <p>
             <span className="font-medium">Payment Method:</span>{" "}
             {values.paymentMethod}
           </p>
+          {values.paymentNotes && (
+            <p>
+              <span className="font-medium">Payment Notes:</span>{" "}
+              <span className="whitespace-pre-wrap">{values.paymentNotes}</span>
+            </p>
+          )}
+          {values.paymentMethod === "Bank Transfer" && values.bankDetails && (
+            <>
+              <p>
+                <span className="font-medium">Bank Name:</span>{" "}
+                {values.bankDetails.bankName}
+              </p>
+              <p>
+                <span className="font-medium">Account Number:</span>{" "}
+                {values.bankDetails.accountNumber}
+              </p>
+              <p>
+                <span className="font-medium">Account Holder:</span>{" "}
+                {values.bankDetails.accountHolder}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>

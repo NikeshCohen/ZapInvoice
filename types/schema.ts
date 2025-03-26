@@ -1,7 +1,5 @@
 import * as z from "zod";
 
-import { Currency } from "@/components/ui/select-currency";
-
 const contactInfoSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -35,7 +33,15 @@ export const invoiceSchema = z
     paymentMethod: z.enum(["Bank Transfer", "Cash", "Check"]),
     bankDetails: bankDetailsSchema.optional(),
     currency: z.string().min(1, "Currency is required"),
-    selectedCurrency: z.custom<Currency>(),
+    selectedCurrency: z
+      .object({
+        code: z.string(),
+        decimals: z.number(),
+        name: z.string(),
+        number: z.string(),
+        symbol: z.string().optional(),
+      })
+      .optional(),
     paymentNotes: z.string().optional(),
   })
   .refine(
