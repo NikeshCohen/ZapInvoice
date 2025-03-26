@@ -35,13 +35,15 @@ const initialInvoiceData: InvoiceData = {
   issueDate: "",
   dueDate: "",
   items: [],
-  paymentTerms: 0,
-  paymentMethod: "",
+  paymentMethod: "Bank Transfer",
   bankDetails: {
     bankName: "",
     accountNumber: "",
     accountHolder: "",
   },
+  currency: "USD",
+  selectedCurrency: undefined,
+  paymentNotes: "",
 };
 
 export function InvoiceProvider({ children }: { children: ReactNode }) {

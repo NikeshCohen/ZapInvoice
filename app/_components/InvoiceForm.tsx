@@ -131,42 +131,51 @@ export function InvoiceForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-background/40 relative flex min-h-[600px] flex-col rounded-2xl p-4"
+      >
+        <div className="flex-1">
+          <Tabs value={activeTab} onValueChange={handleTabChange}>
+            <TabsList className="grid w-full grid-cols-4">
+              {TABS.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className={cn(
+                    hasSubmitted &&
+                      !isTabValid(tab.id) &&
+                      "cursor-not-allowed! text-red-600",
+                  )}
+                >
+                  {tab.label}
+                  {hasSubmitted && !isTabValid(tab.id) && (
+                    <span className="ml-2 h-2 w-2 rounded-full bg-red-500" />
+                  )}
+                </TabsTrigger>
+              ))}
+            </TabsList>
             {TABS.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className={cn(
-                  hasSubmitted &&
-                    !isTabValid(tab.id) &&
-                    "cursor-not-allowed! text-red-600",
-                )}
-              >
-                {tab.label}
-                {hasSubmitted && !isTabValid(tab.id) && (
-                  <span className="ml-2 h-2 w-2 rounded-full bg-red-500" />
-                )}
-              </TabsTrigger>
+              <TabsContent key={tab.id} value={tab.id}>
+                <tab.component form={form} />
+              </TabsContent>
             ))}
-          </TabsList>
-          {TABS.map((tab) => (
-            <TabsContent key={tab.id} value={tab.id}>
-              <tab.component form={form} />
-            </TabsContent>
-          ))}
-        </Tabs>
+          </Tabs>
+        </div>
 
-        <div className="flex justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleBack}
-            disabled={isFirstTab}
-          >
-            Back
-          </Button>
+        <div className="mt-8 flex justify-between border-t pt-4">
+          {!isFirstTab ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleBack}
+              disabled={isFirstTab}
+            >
+              Back
+            </Button>
+          ) : (
+            <div></div>
+          )}
           {isLastTab ? (
             <Button type="submit">Save Invoice</Button>
           ) : (
