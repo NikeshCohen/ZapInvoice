@@ -5,11 +5,37 @@ import { Currency } from "@/components/ui/select-currency";
 export default function LiveView() {
   const { invoiceData } = useInvoice();
 
-  const calculateTotal = () => {
+  const calculateSubtotal = () => {
     return invoiceData.items.reduce(
       (total, item) => total + item.quantity * item.price,
       0,
     );
+  };
+
+  const calculateDiscount = (subtotal: number) => {
+    if (!invoiceData.discount.enabled || invoiceData.discount.value === 0) {
+      return 0;
+    }
+    return invoiceData.discount.type === "percentage"
+      ? (subtotal * invoiceData.discount.value) / 100
+      : invoiceData.discount.value;
+  };
+
+  const calculateTax = (amountAfterDiscount: number) => {
+    if (!invoiceData.tax.enabled || invoiceData.tax.value === 0) {
+      return 0;
+    }
+    return invoiceData.tax.type === "percentage"
+      ? (amountAfterDiscount * invoiceData.tax.value) / 100
+      : invoiceData.tax.value;
+  };
+
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const discount = calculateDiscount(subtotal);
+    const amountAfterDiscount = subtotal - discount;
+    const tax = calculateTax(amountAfterDiscount);
+    return amountAfterDiscount + tax;
   };
 
   const formatCurrency = (amount: number) => {
@@ -107,8 +133,62 @@ export default function LiveView() {
                     </tr>
                   )}
                 </tbody>
-                <tfoot>
+                <tfoot className="border-t border-gray-200">
                   <tr>
+                    <td
+                      colSpan={3}
+                      className="px-4 py-2 text-right font-medium whitespace-nowrap"
+                    >
+                      Subtotal:
+                    </td>
+                    <td className="px-4 py-2 text-right font-medium whitespace-nowrap">
+                      {formatCurrency(calculateSubtotal())}
+                    </td>
+                  </tr>
+                  {invoiceData.discount.enabled &&
+                    invoiceData.discount.value > 0 && (
+                      <tr>
+                        <td
+                          colSpan={3}
+                          className="px-4 py-2 text-right font-medium whitespace-nowrap text-red-600"
+                        >
+                          Discount{" "}
+                          {invoiceData.discount.type === "percentage"
+                            ? `(${invoiceData.discount.value}%)`
+                            : ""}
+                          :
+                        </td>
+                        <td className="px-4 py-2 text-right font-medium whitespace-nowrap text-red-600">
+                          -
+                          {formatCurrency(
+                            calculateDiscount(calculateSubtotal()),
+                          )}
+                        </td>
+                      </tr>
+                    )}
+                  {invoiceData.tax.enabled && invoiceData.tax.value > 0 && (
+                    <tr>
+                      <td
+                        colSpan={3}
+                        className="px-4 py-2 text-right font-medium whitespace-nowrap"
+                      >
+                        Tax{" "}
+                        {invoiceData.tax.type === "percentage"
+                          ? `(${invoiceData.tax.value}%)`
+                          : ""}
+                        :
+                      </td>
+                      <td className="px-4 py-2 text-right font-medium whitespace-nowrap">
+                        {formatCurrency(
+                          calculateTax(
+                            calculateSubtotal() -
+                              calculateDiscount(calculateSubtotal()),
+                          ),
+                        )}
+                      </td>
+                    </tr>
+                  )}
+                  <tr className="border-t border-gray-200">
                     <td
                       colSpan={3}
                       className="px-4 py-2 text-right font-medium whitespace-nowrap"

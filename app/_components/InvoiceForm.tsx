@@ -43,6 +43,17 @@ const defaultValues: InvoiceData = {
   },
   currency: "USD",
   selectedCurrency: undefined,
+  paymentNotes: "",
+  discount: {
+    enabled: false,
+    type: "percentage",
+    value: 0,
+  },
+  tax: {
+    enabled: false,
+    type: "percentage",
+    value: 0,
+  },
 };
 
 export function InvoiceForm() {

@@ -40,7 +40,15 @@ export const TABS = [
   {
     id: "items",
     label: "Items",
-    fields: ["items"] as InvoiceFormFields[],
+    fields: [
+      "items",
+      "discount.enabled",
+      "discount.type",
+      "discount.value",
+      "tax.enabled",
+      "tax.type",
+      "tax.value",
+    ] as InvoiceFormFields[],
     component: ItemsTab,
   },
   {

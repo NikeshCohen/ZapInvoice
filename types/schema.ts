@@ -22,6 +22,12 @@ const bankDetailsSchema = z.object({
   accountHolder: z.string().min(1, "Account holder name is required"),
 });
 
+const adjustmentSchema = z.object({
+  enabled: z.boolean().default(false),
+  type: z.enum(["percentage", "fixed"]).default("percentage"),
+  value: z.number().min(0).default(0),
+});
+
 export const invoiceSchema = z
   .object({
     from: contactInfoSchema,
@@ -43,6 +49,16 @@ export const invoiceSchema = z
       })
       .optional(),
     paymentNotes: z.string().optional(),
+    discount: adjustmentSchema.default({
+      enabled: false,
+      type: "percentage",
+      value: 0,
+    }),
+    tax: adjustmentSchema.default({
+      enabled: false,
+      type: "percentage",
+      value: 0,
+    }),
   })
   .refine(
     (data) => {

@@ -44,6 +44,16 @@ const initialInvoiceData: InvoiceData = {
   currency: "USD",
   selectedCurrency: undefined,
   paymentNotes: "",
+  discount: {
+    enabled: false,
+    type: "percentage" as const,
+    value: 0,
+  },
+  tax: {
+    enabled: false,
+    type: "percentage" as const,
+    value: 0,
+  },
 };
 
 export function InvoiceProvider({ children }: { children: ReactNode }) {
