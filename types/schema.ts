@@ -32,11 +32,11 @@ export const invoiceSchema = z
     issueDate: z.string().min(1, "Issue date is required"),
     dueDate: z.string().min(1, "Due date is required"),
     items: z.array(invoiceItemSchema).min(1, "At least one item is required"),
-    paymentTerms: z.number().min(0, "Payment terms must be non-negative"),
     paymentMethod: z.enum(["Bank Transfer", "Cash", "Check"]),
     bankDetails: bankDetailsSchema.optional(),
     currency: z.string().min(1, "Currency is required"),
-    selectedCurrency: z.custom<Currency>().optional(),
+    selectedCurrency: z.custom<Currency>(),
+    paymentNotes: z.string().optional(),
   })
   .refine(
     (data) => {

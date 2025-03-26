@@ -1,18 +1,19 @@
-import React from "react";
+"use client";
+
+import React, { useCallback, useMemo, useState } from "react";
 
 import { allCurrencies } from "@/constants/currencies";
 import { customCurrencies } from "@/constants/currencies";
-import { SelectProps } from "@radix-ui/react-select";
+import type { SelectProps } from "@radix-ui/react-select";
 import { currencies as AllCurrencies } from "country-data-list";
 
 import {
   Select,
-  SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { VirtualizedSelectContent } from "@/components/ui/virtualized-select.tsx";
 
 import { cn } from "@/lib/utils";
 
@@ -34,129 +35,141 @@ interface CurrencySelectProps extends Omit<SelectProps, "onValueChange"> {
   valid?: boolean;
 }
 
-const CurrencySelect = React.forwardRef<HTMLButtonElement, CurrencySelectProps>(
-  (
-    {
-      value,
-      onValueChange,
-      onCurrencySelect,
-      name,
-      placeholder = "Select currency",
-      currencies = "withdrawal",
-      variant = "default",
-      valid = true,
-      ...props
-    },
-    ref,
-  ) => {
-    const [selectedCurrency, setSelectedCurrency] =
-      React.useState<Currency | null>(null);
+// Pre-process currencies outside component to avoid recalculation
+const processedCurrencies = {
+  all: new Map<string, Currency>(),
+  custom: new Map<string, Currency>(),
+};
 
-    const uniqueCurrencies = React.useMemo<Currency[]>(() => {
-      const currencyMap = new Map<string, Currency>();
-
-      AllCurrencies.all.forEach((currency: Currency) => {
-        if (currency.code && currency.name && currency.symbol) {
-          let shouldInclude = false;
-
-          switch (currencies) {
-            case "custom":
-              shouldInclude = customCurrencies.includes(currency.code);
-              break;
-            case "all":
-              shouldInclude = !allCurrencies.includes(currency.code);
-              break;
-            default:
-              shouldInclude = !allCurrencies.includes(currency.code);
-          }
-
-          if (shouldInclude) {
-            // Special handling for Euro
-            if (currency.code === "EUR") {
-              currencyMap.set(currency.code, {
-                code: currency.code,
-                name: "Euro",
-                symbol: currency.symbol,
-                decimals: currency.decimals,
-                number: currency.number,
-              });
-            } else {
-              currencyMap.set(currency.code, {
-                code: currency.code,
-                name: currency.name,
-                symbol: currency.symbol,
-                decimals: currency.decimals,
-                number: currency.number,
-              });
-            }
-          }
-        }
-      });
-
-      // Convert the map to an array and sort by currency name
-      return Array.from(currencyMap.values()).sort((a, b) =>
-        a.name.localeCompare(b.name),
-      );
-    }, [currencies]);
-
-    const handleValueChange = (newValue: string) => {
-      const fullCurrencyData = uniqueCurrencies.find(
-        (curr) => curr.code === newValue,
-      );
-      if (fullCurrencyData) {
-        setSelectedCurrency(fullCurrencyData);
-        if (onValueChange) {
-          onValueChange(newValue);
-        }
-        if (onCurrencySelect) {
-          onCurrencySelect(fullCurrencyData);
-        }
+// Initialize the processed currencies
+(() => {
+  AllCurrencies.all.forEach((currency: Currency) => {
+    if (currency.code && currency.name && currency.symbol) {
+      // Process for "all" currencies
+      if (!allCurrencies.includes(currency.code)) {
+        const currencyData = {
+          code: currency.code,
+          name: currency.code === "EUR" ? "Euro" : currency.name,
+          symbol: currency.symbol,
+          decimals: currency.decimals,
+          number: currency.number,
+        };
+        processedCurrencies.all.set(currency.code, currencyData);
       }
-    };
 
-    void selectedCurrency;
+      // Process for "custom" currencies
+      if (customCurrencies.includes(currency.code)) {
+        const currencyData = {
+          code: currency.code,
+          name: currency.code === "EUR" ? "Euro" : currency.name,
+          symbol: currency.symbol,
+          decimals: currency.decimals,
+          number: currency.number,
+        };
+        processedCurrencies.custom.set(currency.code, currencyData);
+      }
+    }
+  });
+})();
 
-    return (
-      <Select
-        value={value}
-        onValueChange={handleValueChange}
-        {...props}
-        name={name}
-        data-valid={valid}
-      >
-        <SelectTrigger
-          className={cn("w-full", variant === "small" && "w-fit gap-2")}
+const CurrencySelect = React.memo(
+  React.forwardRef<HTMLButtonElement, CurrencySelectProps>(
+    (
+      {
+        value,
+        onValueChange,
+        onCurrencySelect,
+        name,
+        placeholder = "Select currency",
+        currencies = "all",
+        variant = "default",
+        valid = true,
+        ...props
+      },
+      ref,
+    ) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(
+        null,
+      );
+
+      // Get the appropriate currency list based on the currencies prop
+      const uniqueCurrencies = useMemo<Currency[]>(() => {
+        const currencyMap =
+          currencies === "custom"
+            ? processedCurrencies.custom
+            : processedCurrencies.all;
+
+        // Convert the map to an array and sort by currency name
+        return Array.from(currencyMap.values()).sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+      }, [currencies]);
+
+      const handleValueChange = useCallback(
+        (newValue: string) => {
+          const fullCurrencyData = uniqueCurrencies.find(
+            (curr) => curr.code === newValue,
+          );
+
+          if (fullCurrencyData) {
+            setSelectedCurrency(fullCurrencyData);
+            onValueChange?.(newValue);
+            onCurrencySelect?.(fullCurrencyData);
+          }
+        },
+        [uniqueCurrencies, onValueChange, onCurrencySelect],
+      );
+
+      // Render a currency item
+      const renderCurrencyItem = useCallback(
+        (currency: Currency) => (
+          <SelectItem value={currency?.code || ""}>
+            <div className="flex items-center gap-2 w-full">
+              <span className="w-8 text-muted-foreground text-sm text-left">
+                {currency?.code}
+              </span>
+              <span className="hidden">{currency?.symbol}</span>
+              <span>{currency?.name}</span>
+            </div>
+          </SelectItem>
+        ),
+        [],
+      );
+
+      return (
+        <Select
+          value={value}
+          onValueChange={handleValueChange}
+          {...props}
+          name={name}
           data-valid={valid}
-          ref={ref}
         >
-          {value && variant === "small" ? (
-            <SelectValue placeholder={placeholder}>
-              <span>{value}</span>
-            </SelectValue>
-          ) : (
-            <SelectValue placeholder={placeholder} />
-          )}
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {uniqueCurrencies.map((currency) => (
-              <SelectItem key={currency?.code} value={currency?.code || ""}>
-                <div className="flex items-center gap-2 w-full">
-                  <span className="w-8 text-muted-foreground text-sm text-left">
-                    {currency?.code}
-                  </span>
-                  <span className="hidden">{currency?.symbol}</span>
-                  <span>{currency?.name}</span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    );
-  },
+          <SelectTrigger
+            className={cn("w-full", variant === "small" && "w-fit gap-2")}
+            data-valid={valid}
+            ref={ref}
+          >
+            {value && variant === "small" ? (
+              <SelectValue placeholder={placeholder}>
+                <span>{value}</span>
+              </SelectValue>
+            ) : (
+              <SelectValue placeholder={placeholder} />
+            )}
+          </SelectTrigger>
+
+          <VirtualizedSelectContent
+            items={uniqueCurrencies}
+            renderItem={(currency) => renderCurrencyItem(currency)}
+            maxHeight={300}
+          />
+        </Select>
+      );
+    },
+  ),
 );
 
-CurrencySelect.displayName = "CurrencySelect";
+CurrencySelect.displayName = "OptimizedCurrencySelect";
 
 export { CurrencySelect };

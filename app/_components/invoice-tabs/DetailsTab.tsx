@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Currency } from "@/components/ui/select-currency";
 import { CurrencySelect } from "@/components/ui/select-currency";
+import { Textarea } from "@/components/ui/textarea";
 
 interface DetailsTabProps {
   form: UseFormReturn<InvoiceData>;
@@ -51,6 +52,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
             <FormField
               control={form.control}
               name="invoiceNumber"
+              defaultValue=""
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Invoice Number</FormLabel>
@@ -65,6 +67,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
             <FormField
               control={form.control}
               name="currency"
+              defaultValue=""
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Currency</FormLabel>
@@ -88,6 +91,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
             <FormField
               control={form.control}
               name="issueDate"
+              defaultValue={undefined}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Issue Date</FormLabel>
@@ -104,6 +108,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
             <FormField
               control={form.control}
               name="dueDate"
+              defaultValue={undefined}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Due Date</FormLabel>
@@ -129,26 +134,8 @@ export function DetailsTab({ form }: DetailsTabProps) {
         <div className="space-y-4">
           <FormField
             control={form.control}
-            name="paymentTerms"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Payment Terms (Days)</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="number"
-                    min={0}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="paymentMethod"
+            defaultValue="Bank Transfer"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Payment Method</FormLabel>
@@ -169,6 +156,25 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     ))}
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="paymentNotes"
+            defaultValue=""
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Payment Notes</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder="Enter any additional payment instructions or notes"
+                    className="min-h-[100px]"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

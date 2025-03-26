@@ -125,14 +125,18 @@ export default function LiveView() {
           </div>
 
           <div className="flex flex-wrap gap-x-2">
-            <span className="font-medium">Payment Terms:</span>
-            <span className="break-all">{invoiceData.paymentTerms} days</span>
-          </div>
-
-          <div className="flex flex-wrap gap-x-2">
             <span className="font-medium">Payment Method:</span>
             <span className="break-all">{invoiceData.paymentMethod}</span>
           </div>
+
+          {invoiceData.paymentNotes && (
+            <div className="flex flex-wrap gap-x-2">
+              <span className="font-medium">Payment Notes:</span>
+              <span className="break-all whitespace-pre-wrap">
+                {invoiceData.paymentNotes}
+              </span>
+            </div>
+          )}
 
           {invoiceData.paymentMethod === "Bank Transfer" && (
             <div className="space-y-2">
