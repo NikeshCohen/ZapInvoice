@@ -42,6 +42,8 @@ export function DetailsTab({ form }: DetailsTabProps) {
   };
 
   const handleCurrencySelect = (currency: Currency) => {
+    // Save both the currency code and the full currency object
+    form.setValue("currency", currency.code);
     form.setValue("selectedCurrency", currency);
   };
 
@@ -100,6 +102,9 @@ export function DetailsTab({ form }: DetailsTabProps) {
                       currencies="all"
                       variant="default"
                       name="currency"
+                      value={field.value}
+                      defaultValue={field.value}
+                      selectedCurrency={form.getValues("selectedCurrency")}
                     />
                   </FormControl>
                   <div className="min-h-[5px] md:min-h-[10px]">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { allCurrencies } from "@/constants/currencies";
 import { customCurrencies } from "@/constants/currencies";
@@ -33,6 +33,7 @@ interface CurrencySelectProps extends Omit<SelectProps, "onValueChange"> {
   currencies?: "custom" | "all";
   variant?: "default" | "small";
   valid?: boolean;
+  selectedCurrency?: Currency;
 }
 
 // Pre-process currencies outside component to avoid recalculation
@@ -84,23 +85,27 @@ const CurrencySelect = React.memo(
         currencies = "all",
         variant = "default",
         valid = true,
+        selectedCurrency: initialSelectedCurrency,
         ...props
       },
       ref,
     ) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(
-        null,
+        initialSelectedCurrency || null,
       );
 
-      // Get the appropriate currency list based on the currencies prop
+      useEffect(() => {
+        if (initialSelectedCurrency) {
+          setSelectedCurrency(initialSelectedCurrency);
+        }
+      }, [initialSelectedCurrency]);
+
       const uniqueCurrencies = useMemo<Currency[]>(() => {
         const currencyMap =
           currencies === "custom"
             ? processedCurrencies.custom
             : processedCurrencies.all;
 
-        // Convert the map to an array and sort by currency name
         return Array.from(currencyMap.values()).sort((a, b) =>
           a.name.localeCompare(b.name),
         );
@@ -125,8 +130,8 @@ const CurrencySelect = React.memo(
       const renderCurrencyItem = useCallback(
         (currency: Currency) => (
           <SelectItem value={currency?.code || ""}>
-            <div className="flex items-center gap-2 w-full">
-              <span className="w-8 text-muted-foreground text-sm text-left">
+            <div className="flex w-full items-center gap-2">
+              <span className="text-muted-foreground w-8 text-left text-sm">
                 {currency?.code}
               </span>
               <span className="hidden">{currency?.symbol}</span>
