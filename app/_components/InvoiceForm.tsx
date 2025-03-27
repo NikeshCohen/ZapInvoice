@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { TABS } from "@/constants/tabs";
 import { useInvoice } from "@/context/InvoiceContext";
+import { useLogo } from "@/context/LogoContext";
+import { useSignature } from "@/context/SignatureContext";
 import { type InvoiceData, invoiceSchema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { generatePDF } from "@/lib/generate";
 import { cn } from "@/lib/utils";
 
 const defaultValues: InvoiceData = {
@@ -58,6 +61,8 @@ const defaultValues: InvoiceData = {
 
 export function InvoiceForm() {
   const { setInvoiceData } = useInvoice();
+  const { logoData } = useLogo();
+  const { signatureData } = useSignature();
   const [activeTab, setActiveTab] =
     useState<(typeof TABS)[number]["id"]>("from-to");
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -75,8 +80,15 @@ export function InvoiceForm() {
     return () => subscription.unsubscribe();
   }, [form, form.watch, setInvoiceData]);
 
-  const onSubmit = (data: InvoiceData) => {
+  const onSubmit = async (data: InvoiceData) => {
     setInvoiceData(data);
+    try {
+      // Generate PDF after successful submission
+      await generatePDF(data, logoData, signatureData);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      // Optionally add error handling UI here
+    }
   };
 
   const isTabValid = (tabId: (typeof TABS)[number]["id"]) => {
@@ -128,14 +140,17 @@ export function InvoiceForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
-    await form.handleSubmit(onSubmit)(e);
-    // If there are errors, navigate to the first tab with an error
-    if (form.formState.errors) {
+
+    const isValid = await form.trigger();
+    if (!isValid) {
       const firstErrorTab = TABS.find((tab) => !isTabValid(tab.id));
       if (firstErrorTab) {
         setActiveTab(firstErrorTab.id);
       }
+      return;
     }
+
+    await form.handleSubmit(onSubmit)(e);
   };
 
   return (
