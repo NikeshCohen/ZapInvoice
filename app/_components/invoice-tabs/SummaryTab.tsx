@@ -40,34 +40,6 @@ export function SummaryTab({ form }: SummaryTabProps) {
       </div>
 
       <div className="rounded-lg border p-4">
-        <h3 className="mb-2 font-medium">From/To</h3>
-        <div className="space-y-1 text-sm">
-          <p>
-            <span className="font-medium">From:</span> {values.from.name}
-          </p>
-          <p>
-            <span className="font-medium">To:</span> {values.to.name}
-          </p>
-        </div>
-      </div>
-
-      <div className="rounded-lg border p-4">
-        <h3 className="mb-2 font-medium">Invoice Details</h3>
-        <div className="space-y-1 text-sm">
-          <p>
-            <span className="font-medium">Invoice Number:</span>{" "}
-            {values.invoiceNumber}
-          </p>
-          <p>
-            <span className="font-medium">Issue Date:</span> {values.issueDate}
-          </p>
-          <p>
-            <span className="font-medium">Due Date:</span> {values.dueDate}
-          </p>
-        </div>
-      </div>
-
-      <div className="rounded-lg border p-4">
         <h3 className="mb-2 font-medium">Items</h3>
         <div className="space-y-2">
           {values.items.map((item, index) => (

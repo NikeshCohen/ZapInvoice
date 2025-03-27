@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useInvoice } from "@/context/InvoiceContext";
 import { useLogo } from "@/context/LogoContext";
 import { useSignature } from "@/context/SignatureContext";
@@ -53,7 +54,6 @@ export default function LiveView() {
       <div className="flex items-center justify-between text-right">
         {logoData ? (
           <div className="flex justify-start">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={logoData}
               alt="Company Logo"
@@ -269,25 +269,22 @@ export default function LiveView() {
       </div>
 
       {/* Signature Section */}
-      <div className="border-t pt-8">
-        <div className="flex flex-col items-end">
-          <div className="w-[200px]">
-            {signatureData ? (
-              // eslint-disable-next-line @next/next/no-img-element
+      {signatureData && (
+        <div className="border-t pt-8">
+          <div className="flex flex-col items-end">
+            <div className="w-[200px]">
               <img
                 src={signatureData}
                 alt="Signature"
                 className="h-[100px] w-full object-contain"
               />
-            ) : (
-              <div className="h-[100px] border-b border-dashed" />
-            )}
-            <div className="mt-2 text-center text-sm text-gray-500">
-              Signature
+              <div className="mt-2 text-center text-sm text-gray-500">
+                Signature
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

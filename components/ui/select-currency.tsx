@@ -90,6 +90,7 @@ const CurrencySelect = React.memo(
       },
       ref,
     ) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(
         initialSelectedCurrency || null,
       );
