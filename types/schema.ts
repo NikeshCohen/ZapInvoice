@@ -66,22 +66,46 @@ export const invoiceSchema = z
       return new Date(data.dueDate) >= new Date(data.issueDate);
     },
     {
-      message: "Due date can not be before issue date",
+      message: "Due date cannot be before issue date",
       path: ["dueDate"],
     },
   )
   .refine(
     (data) => {
       if (data.paymentMethod !== "Bank Transfer") return true;
-      return (
-        !!data.bankDetails?.bankName &&
-        !!data.bankDetails?.accountNumber &&
-        !!data.bankDetails?.accountHolder
-      );
+      if (!data.bankDetails?.bankName) {
+        return false;
+      }
+      if (!data.bankDetails?.accountNumber) {
+        return false;
+      }
+      if (!data.bankDetails?.accountHolder) {
+        return false;
+      }
+      return true;
     },
-    {
-      message: "Bank details are required for bank transfer",
-      path: ["bankDetails"],
+    (data) => {
+      if (data.paymentMethod !== "Bank Transfer")
+        return { path: [], message: "" };
+      if (!data.bankDetails?.bankName) {
+        return {
+          path: ["bankDetails", "bankName"],
+          message: "Bank name is required for bank transfer",
+        };
+      }
+      if (!data.bankDetails?.accountNumber) {
+        return {
+          path: ["bankDetails", "accountNumber"],
+          message: "Account number is required for bank transfer",
+        };
+      }
+      if (!data.bankDetails?.accountHolder) {
+        return {
+          path: ["bankDetails", "accountHolder"],
+          message: "Account holder name is required for bank transfer",
+        };
+      }
+      return { path: [], message: "" };
     },
   );
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import type { InvoiceData } from "@/types/schema";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -42,6 +44,23 @@ export function DetailsTab({ form }: DetailsTabProps) {
   const handleCurrencySelect = (currency: Currency) => {
     form.setValue("selectedCurrency", currency);
   };
+
+  // Watch for changes in payment method
+  useEffect(() => {
+    if (paymentMethod !== "Bank Transfer") {
+      form.setValue("bankDetails", {
+        bankName: "",
+        accountNumber: "",
+        accountHolder: "",
+      });
+      // Clear bank details validation errors when switching away from Bank Transfer
+      form.clearErrors([
+        "bankDetails.bankName",
+        "bankDetails.accountNumber",
+        "bankDetails.accountHolder",
+      ]);
+    }
+  }, [paymentMethod, form]);
 
   return (
     <div className="space-y-2">
@@ -220,6 +239,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     <FormControl>
                       <Input {...field} placeholder="Enter account number" />
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
