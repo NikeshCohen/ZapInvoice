@@ -4,9 +4,9 @@ import React from "react";
 
 import { InvoiceForm } from "@/app/_components/InvoiceForm";
 import LiveView from "@/app/_components/LiveView";
-import { InvoiceProvider } from "@/app/_context/InvoiceContext";
-import { LogoProvider } from "@/app/_context/LogoContext";
-import { SignatureProvider } from "@/app/_context/SignatureContext";
+import { InvoiceProvider } from "@/context/InvoiceContext";
+import { LogoProvider } from "@/context/LogoContext";
+import { SignatureProvider } from "@/context/SignatureContext";
 
 export default function InvoicePage() {
   return (

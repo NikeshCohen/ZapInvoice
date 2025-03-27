@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useRef } from "react";
 
-import { useLogo } from "@/app/_context/LogoContext";
+import { useLogo } from "@/context/LogoContext";
 import { Image as ImageIcon, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";

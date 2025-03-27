@@ -1,6 +1,6 @@
-import { useInvoice } from "@/app/_context/InvoiceContext";
-import { useLogo } from "@/app/_context/LogoContext";
-import { useSignature } from "@/app/_context/SignatureContext";
+import { useInvoice } from "@/context/InvoiceContext";
+import { useLogo } from "@/context/LogoContext";
+import { useSignature } from "@/context/SignatureContext";
 import { format } from "date-fns";
 
 import { Currency } from "@/components/ui/select-currency";
@@ -41,11 +41,6 @@ export default function LiveView() {
     const amountAfterDiscount = subtotal - discount;
     const tax = calculateTax(amountAfterDiscount);
     return amountAfterDiscount + tax;
-  };
-
-  const formatCurrency = (amount: number) => {
-    const currency = invoiceData.selectedCurrency as Currency | undefined;
-    return `${currency?.symbol || "$"}${amount.toFixed(2)}`;
   };
 
   const formatPrice = (amount: number) => {

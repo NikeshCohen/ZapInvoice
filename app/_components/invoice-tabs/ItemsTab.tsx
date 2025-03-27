@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-import { useInvoice } from "@/app/_context/InvoiceContext";
+import { useInvoice } from "@/context/InvoiceContext";
 import type { InvoiceData } from "@/types/schema";
 import {
   ArrowDown,

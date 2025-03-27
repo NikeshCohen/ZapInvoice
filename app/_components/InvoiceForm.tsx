@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { useInvoice } from "@/app/_context/InvoiceContext";
 import { TABS } from "@/constants/tabs";
+import { useInvoice } from "@/context/InvoiceContext";
 import { type InvoiceData, invoiceSchema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -122,9 +122,7 @@ export function InvoiceForm() {
   };
 
   const handleTabChange = (value: string) => {
-    if (isTabValid(activeTab)) {
-      setActiveTab(value as (typeof TABS)[number]["id"]);
-    }
+    setActiveTab(value as (typeof TABS)[number]["id"]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -154,9 +152,7 @@ export function InvoiceForm() {
                   key={tab.id}
                   value={tab.id}
                   className={cn(
-                    hasSubmitted &&
-                      !isTabValid(tab.id) &&
-                      "cursor-not-allowed! text-red-600",
+                    hasSubmitted && !isTabValid(tab.id) && "text-red-600",
                   )}
                 >
                   {tab.label}

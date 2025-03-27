@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useSignature } from "@/app/_context/SignatureContext";
+import { useSignature } from "@/context/SignatureContext";
 import { FileSignature } from "lucide-react";
 import SignatureCanvas from "react-signature-canvas";
 
