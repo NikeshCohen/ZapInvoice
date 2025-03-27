@@ -78,7 +78,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                   <FormControl>
                     <Input {...field} placeholder="INV-001" />
                   </FormControl>
-                  <div className="min-h-[20px]">
+                  <div className="min-h-[5px] md:min-h-[10px]">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -102,7 +102,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                       name="currency"
                     />
                   </FormControl>
-                  <div className="min-h-[20px]">
+                  <div className="min-h-[5px] md:min-h-[10px]">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -121,8 +121,8 @@ export function DetailsTab({ form }: DetailsTabProps) {
                   <FormControl>
                     <DatePicker {...field} placeholder="Select issue date" />
                   </FormControl>
-                  <div className="min-h-[20px]">
-                    <div className="min-h-[20px]">
+                  <div className="min-h-[5px] md:min-h-[10px]">
+                    <div className="min-h-[5px] md:min-h-[10px]">
                       <FormMessage />
                     </div>
                   </div>
@@ -144,8 +144,8 @@ export function DetailsTab({ form }: DetailsTabProps) {
                       showPresets
                     />
                   </FormControl>
-                  <div className="min-h-[20px]">
-                    <div className="min-h-[20px]">
+                  <div className="min-h-[5px] md:min-h-[10px]">
+                    <div className="min-h-[5px] md:min-h-[10px]">
                       <FormMessage />
                     </div>
                   </div>
@@ -183,7 +183,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="min-h-[20px]">
+                <div className="min-h-[5px] md:min-h-[10px]">
                   <FormMessage />
                 </div>
               </FormItem>
@@ -204,7 +204,7 @@ export function DetailsTab({ form }: DetailsTabProps) {
                     className="min-h-[80px] resize-none"
                   />
                 </FormControl>
-                <div className="min-h-[20px]">
+                <div className="min-h-[5px] md:min-h-[10px]">
                   <FormMessage />
                 </div>
               </FormItem>
@@ -258,7 +258,6 @@ export function DetailsTab({ form }: DetailsTabProps) {
                         placeholder="Enter account holder name"
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}

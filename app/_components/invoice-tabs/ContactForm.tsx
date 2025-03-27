@@ -68,7 +68,7 @@ export function ContactForm({ form, type, title }: ContactFormProps) {
                     placeholder={field.placeholder}
                   />
                 </FormControl>
-                <div className="min-h-[20px]">
+                <div className="min-h-[5px] md:min-h-[10px]">
                   <FormMessage />
                 </div>
               </FormItem>
