@@ -31,6 +31,8 @@ Generate ONLY a JSON object matching the schema. No other text.`
     // Just check if it's valid JSON
     const parsedData = JSON.parse(cleanedText);
 
+    console.log(parsedData);
+
     return {
       success: true,
       data: parsedData,

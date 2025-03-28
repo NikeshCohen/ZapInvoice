@@ -85,7 +85,7 @@ export function GenWithAI() {
             className="text-muted-foreground hover:text-primary cursor-pointer px-0 text-right text-xs underline"
             onClick={() =>
               setPrompt(
-                "Generate an invoice for my web development agency. The invoice is for the development of a custom website, including design, development, and deployment. Bill the client, John Doe, with the email john.doe@example.com, phone number +1 234 567 890, and address 123 Main St, New York, NY 10001. The invoice number is INV-20240301, issued on March 24, 2025, and due on March 31, 2025. The currency is USD, and payment will be made via Bank Transfer. The services provided include Website Design ($500), Website Development ($2,000), and Hosting & Deployment ($300), Apply a 10% discount and a 5% tax. The bank details for payment are: Bank Name - First National Bank, Account Number - 123456789, Account Holder - ZapInvoice Solutions. Make sure the invoice is clean, professional, and easy to read.",
+                "Bill John Doe, with the email john.doe@example.com, +1 234 567 890, 123 Main St, New York, NY 10001, USA this to the TO information. Invoice num INV-98373, issued on March 24, 2025, and due on March 31, 2025. The currency is USD, and payment will via Bank Transfer. The services provided: Website Design ($500), Website Development ($2,000), and Hosting & Deployment ($300), Apply a 10% discount and a 5% tax. The bank details for payment are: Bank Name - First National Bank, Account Number - 123456789, Account Holder - ZapInvoice Thank him for the business",
               )
             }
           >
