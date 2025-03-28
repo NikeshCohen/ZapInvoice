@@ -60,7 +60,7 @@ const defaultValues: InvoiceData = {
 };
 
 export function InvoiceForm() {
-  const { setInvoiceData } = useInvoice();
+  const { invoiceData, setInvoiceData } = useInvoice();
   const { logoData } = useLogo();
   const { signatureData } = useSignature();
   const [activeTab, setActiveTab] =
@@ -72,6 +72,15 @@ export function InvoiceForm() {
     defaultValues,
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (invoiceData) {
+      form.reset(invoiceData, {
+        keepDirty: false,
+        keepTouched: false,
+      });
+    }
+  }, [invoiceData, form]);
 
   useEffect(() => {
     const subscription = form.watch((value) => {

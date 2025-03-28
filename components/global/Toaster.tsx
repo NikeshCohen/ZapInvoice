@@ -8,9 +8,9 @@ export default function Toaster(props: ToasterProps) {
       toastOptions={{
         ...props.toastOptions,
         style: {
-          background: "hsl(var(--background))",
-          color: "hsl(var(--foreground))",
-          border: "1px solid hsl(var(--border))",
+          background: "var(--background)",
+          color: "var(--foreground)",
+          border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
           ...props.toastOptions?.style,
         },
@@ -18,15 +18,15 @@ export default function Toaster(props: ToasterProps) {
           ...props.toastOptions?.success,
           iconTheme: {
             primary: "hsl(142, 76%, 36%)",
-            secondary: "hsl(var(--primary-foreground))",
+            secondary: "white",
             ...props.toastOptions?.success?.iconTheme,
           },
         },
         error: {
           ...props.toastOptions?.error,
           iconTheme: {
-            primary: "hsl(var(--destructive))",
-            secondary: "hsl(var(--destructive-foreground))",
+            primary: "var(--destructive)",
+            secondary: "white",
             ...props.toastOptions?.error?.iconTheme,
           },
         },

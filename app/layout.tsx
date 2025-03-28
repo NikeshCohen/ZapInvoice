@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/_styles/globals.css";
+import { InvoiceProvider } from "@/context/InvoiceContext";
+import { LogoProvider } from "@/context/LogoContext";
+import { SignatureProvider } from "@/context/SignatureContext";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -57,8 +60,16 @@ export default function RootLayout({
           <Background />
           <Toaster />
           <Analytics />
-          <Header />
-          {children}
+
+          <InvoiceProvider>
+            <SignatureProvider>
+              <LogoProvider>
+                <Header />
+                {children}
+              </LogoProvider>
+            </SignatureProvider>
+          </InvoiceProvider>
+
           <Footer />
         </ThemeProvider>
       </body>

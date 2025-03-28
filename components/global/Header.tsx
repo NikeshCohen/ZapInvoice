@@ -1,9 +1,7 @@
 import { Suspense } from "react";
 
-import { Sparkles } from "lucide-react";
-
+import { GenWithAI } from "@/components/global/GenWithAI";
 import Logo from "@/components/global/Logo";
-import { Button } from "@/components/ui/button";
 
 async function Header() {
   return (
@@ -21,10 +19,7 @@ async function HeaderContent() {
         <div>
           <div className="flex gap-4">
             <div>
-              <Button className="text-white">
-                <span>Gen With AI</span>
-                <Sparkles className="h-4 w-4" />
-              </Button>
+              <GenWithAI />
             </div>
           </div>
         </div>
