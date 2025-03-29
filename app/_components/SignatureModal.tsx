@@ -29,12 +29,12 @@ export function SignatureModal() {
             <img
               src={signatureData}
               alt="Signature"
-              className="h-[100px] w-full rounded-md border bg-white"
+              className="bg-white border rounded-md w-full h-[100px]"
             />
           ) : (
-            <div className="flex h-[100px] w-full min-w-[200px] flex-col items-center justify-center rounded-md border bg-gray-50 hover:bg-gray-100">
-              <FileSignature className="mb-2 h-6 w-6 text-neutral-500" />
-              <span className="text-sm text-neutral-500">
+            <div className="flex flex-col justify-center items-center bg-gray-50 hover:bg-gray-100 border rounded-md w-full min-w-[200px] h-[100px]">
+              <FileSignature className="mb-2 w-6 h-6 text-neutral-500" />
+              <span className="text-neutral-500 text-sm">
                 Click to add signature
               </span>
             </div>
@@ -46,7 +46,7 @@ export function SignatureModal() {
           <DialogTitle>Add Your Signature</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4">
-          <div className="h-[200px] w-full rounded-md border bg-white">
+          <div className="bg-white border rounded-md w-full h-[200px]">
             <SignatureCanvas
               ref={signatureRef}
               canvasProps={{
